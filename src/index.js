@@ -10,17 +10,6 @@ const Theme = {
   DARK: 'dark-theme',
 };
 
-const reloadPage = function () {
-  if (localStorage.getItem('Theme') === Theme.DARK) {
-    document.body.classList.add(Theme.DARK);
-    themeSwitchControlRef.checked = true;
-  } else {
-    document.body.classList.add(Theme.LIGHT);
-  }
-};
-
-reloadPage();
-
 const updateThemeInStorage = function (str) {
   localStorage.setItem('Theme', str);
 };
@@ -40,6 +29,17 @@ const setTheme = event => {
 };
 
 themeSwitchControlRef.addEventListener('change', setTheme);
+
+const reloadPage = function () {
+  if (localStorage.getItem('Theme') === Theme.DARK) {
+    updateBodyClassTheme(Theme.LIGHT, Theme.DARK);
+    themeSwitchControlRef.checked = true;
+  } else {
+    updateBodyClassTheme(Theme.DARK, Theme.LIGHT);
+  }
+};
+
+reloadPage();
 
 function generateMenuItems(arr) {
   const items = arr.map(item => itemTemplate(item));
