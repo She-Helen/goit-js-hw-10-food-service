@@ -10,32 +10,40 @@ const Theme = {
   DARK: 'dark-theme',
 };
 
-if (localStorage.getItem('Theme') === Theme.DARK) {
-  document.body.classList.add(Theme.DARK);
-  themeSwitchControlRef.checked = true;
-} else {
-  document.body.classList.add(Theme.LIGHT);
-}
+const reloadPage = function () {
+  if (localStorage.getItem('Theme') === Theme.DARK) {
+    document.body.classList.add(Theme.DARK);
+    themeSwitchControlRef.checked = true;
+  } else {
+    document.body.classList.add(Theme.LIGHT);
+  }
+};
+
+reloadPage();
+
+const updateThemeInStorage = function (str) {
+  localStorage.setItem('Theme', str);
+};
+const updateBodyClassTheme = function (oldTheme, newTheme) {
+  document.body.classList.remove(oldTheme);
+  document.body.classList.add(newTheme);
+};
 
 const setTheme = event => {
   if (event.target.checked) {
-    themeSwitchControlRef.checked = true;
-    localStorage.setItem('Theme', Theme.DARK);
-    document.body.classList.add(Theme.DARK);
-    document.body.classList.remove(Theme.LIGHT);
+    updateThemeInStorage(Theme.DARK);
+    updateBodyClassTheme(Theme.LIGHT, Theme.DARK);
   } else {
-    themeSwitchControlRef.checked = false;
-    localStorage.setItem('Theme', Theme.LIGHT);
-    document.body.classList.remove(Theme.DARK);
-    document.body.classList.add(Theme.LIGHT);
+    updateThemeInStorage(Theme.LIGHT);
+    updateBodyClassTheme(Theme.DARK, Theme.LIGHT);
   }
 };
 
 themeSwitchControlRef.addEventListener('change', setTheme);
 
 function generateMenuItems(arr) {
-  const items = arr.map(item => itemTemplate(item)).join('');
-  menuRef.insertAdjacentHTML('beforeend', items);
+  const items = arr.map(item => itemTemplate(item));
+  menuRef.insertAdjacentHTML('beforeend', items.join(''));
 }
 
 const startCreateMenu = () => {
